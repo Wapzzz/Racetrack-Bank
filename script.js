@@ -2,9 +2,9 @@ const request = require('request');
 const fs = require('fs');
 // Options
 
-let user = 'test'; // User to send the gold too, should be already registered
+let user = 'USER'; // User to send the gold too, should be already registered
 let pass = 'pass'; // Password you want the users to have
-let host = '10.10.43.47'; // Your machine ip
+let host = 'IP-Adress'; // Your machine ip
 let sCode; // Leave that empty
 
 let cookies;
