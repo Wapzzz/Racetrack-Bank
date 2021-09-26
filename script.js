@@ -13,7 +13,7 @@ let cookie = ''; // Leave blank
 let goodCookie;
 
 
-fs.readFileSync('/root/boxes/THM_Racetrack_Bank/wordlist', 'utf-8')
+fs.readFileSync('WORDLIST PATH', 'utf-8') // In order for the machine to work you need to install any 10k+ wordlist
 .split(/\r?\n/)
 .forEach((line, i) => {
     setTimeout(() => {
