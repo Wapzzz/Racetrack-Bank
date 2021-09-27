@@ -1,82 +1,45 @@
 const request = require('request');
-const fs = require('fs');
 
 // Options
 
 let user = 'USERNAME'; // User to send the gold too, should be already registered
 let pass = 'PASSWORD'; // Password you want the users to have
-let host = 'IP-'; // Your machine ip
+let host = 'HOST'; // Your machine ip
 let sCode; // Leave that empty
 
 let cookies; // Leave that blank
+let sdata = `user=${user}&amount=1`; // Send-Gold data
 
-fs.readFileSync('WORDLIST PATH', 'utf-8')
-.split(/\r?\n/)
-.forEach((line, i) => {
-    let rdata = `username=test${i}&password=${pass}&password2=${pass}`; // Register data
-    let ldata = `username=test${i}&password=${pass}`; // Login data
-    let sdata = `user=${user}&amount=1`; // Send-Gold data
+let gold = 10100; // How much gold to add
+
+for(let i=1; i<gold; i++) {
+    let rdata = `username=tedd${i}&password=${pass}&password2=${pass}`; // Register data
+    let ldata = `username=tedd${i}&password=${pass}`; // Login data
     setTimeout(() => {
-        if(i <= 5000) {
-            setTimeout(() => {
-        request.post({
-            headers: {'content-type' : 'application/x-www-form-urlencoded'},
-            url: `http://${host}/api/create`,
-            body: rdata
-        }, (err, response, body) => {
-            setTimeout(() => {
+    request.post({
+        headers: {'content-type' : 'application/x-www-form-urlencoded'},
+        url: `http://${host}/api/create`,
+        body: rdata
+    }, (err, response, body) => {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url: `http://${host}/api/login`,
+                body: ldata
+            }, (err, res, body) => {      
+                if(!res) return;
+                cookies = res.headers['set-cookie'];
+                if(cookies === undefined) return;
                 request.post({
-                    headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                    url: `http://${host}/api/login`,
-                    body: ldata
-                }, (err, res, body) => {                   
-                    setTimeout(() => {
-                        cookies = res.headers['set-cookie'];
-                        if(cookies === undefined) return;
-                        request.post({
-                            headers: {
-                                'content-type': 'application/x-www-form-urlencoded',
-                                'Cookie': `${cookies}`,
-                            },
-                            url: `http://${host}/api/givegold`,
-                            body: sdata,
-                            }, (err, resp, body) => {
-                                if(body) console.log(i);
-                            });
-                        }, i * 150);
-                    });
-                }, i * 150);
-            }, i * 150);
+                    headers: {
+                        'content-type': 'application/x-www-form-urlencoded',
+                        'Cookie': `${cookies}`,
+                    },
+                url: `http://${host}/api/givegold`,
+                body: sdata,
+                }, (err, resp, body) => {
+                    if(body) console.log(i);
+                });
             });
-            } else {
-                request.post({
-                    headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                    url: `http://${host}/api/create`,
-                    body: rdata
-                }, (err, response, body) => {
-                    setTimeout(() => {
-                        request.post({
-                            headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                            url: `http://${host}/api/login`,
-                            body: ldata
-                        }, (err, res, body) => {                   
-                            setTimeout(() => {
-                                cookies = res.headers['set-cookie'];
-                                if(cookies === undefined) return;
-                                request.post({
-                                    headers: {
-                                        'content-type': 'application/x-www-form-urlencoded',
-                                        'Cookie': `${cookies}`,
-                                    },
-                                    url: `http://${host}/api/givegold`,
-                                    body: sdata,
-                                    }, (err, resp, body) => {
-                                        if(body) console.log(i);
-                                    });
-                                }, i * 150);
-                            });
-                        }, i * 150);
-                    });
-            };
-        }, i * 150);
-    });
+        });
+    }, i * 200);
+};
