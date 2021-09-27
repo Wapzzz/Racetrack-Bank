@@ -7,8 +7,6 @@ value to any value without numbers at its end.
 */
 
 
-
-
 const request = require('request');
 
 // Options
