@@ -11,9 +11,9 @@ const request = require('request');
 
 // Options
 
-let user = 'hell'; // User to send the gold too, should be already registered
-let secUser = 'secuser'; // Else accounts
-let pass = '1'; // Password you want the users to have
+let user = 'USERNAME'; // User to send the gold too, should be already registered
+let secUser = 'SECOND-USER'; // Else accounts
+let pass = 'PASSWORD'; // Password you want the second user to have
 let host = '10.10.33.89'; // Your machine ip
 let sCode; // Leave that empty
 
